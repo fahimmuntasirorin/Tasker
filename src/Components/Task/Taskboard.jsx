@@ -18,12 +18,16 @@ export default function Taskboard() {
     const [tasks , setTasks] = useState([initialTask]);
     const [show , setShow] = useState(false);
 
+    const handleAdd = ({newTask}) =>{
+        console.log(newTask);
+        
+    }
 
     
     return(
         <section className="mb-20" id="tasks">
             {
-                show && <AddTask/>
+                show && <AddTask saveTask={handleAdd}/>
             }
 		
 		<div className="container">

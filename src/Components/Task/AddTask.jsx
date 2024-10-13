@@ -1,6 +1,25 @@
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 
-export default function AddTask() {
+export default function AddTask({saveTask}) {
+
+    // state
+    const [newTask,setNewTasks] = useState({
+        "id":crypto.randomUUID(),
+        "title":"",
+        "description":"",
+        "tags":[],
+        "priority":"",
+    });
+
+    console.log(newTask);
+
+    const handleTask = (e) =>{
+        setNewTasks({
+            ...newTask,
+            [e.target.name]:e.target.value
+        })
+        
+    }
   return (
     <Fragment>
       <div className="bg-black bg-opacity-75 w-full h-full z-10 absolute top-0 left-0"></div>
@@ -18,6 +37,7 @@ export default function AddTask() {
               name="title"
               id="title"
               required
+              onChange={handleTask}
             />
           </div>
 
@@ -29,6 +49,7 @@ export default function AddTask() {
               name="description"
               id="description"
               required
+              onChange={handleTask}
             ></textarea>
           </div>
 
@@ -41,6 +62,7 @@ export default function AddTask() {
                 name="tags"
                 id="tags"
                 required
+                onChange={handleTask}
               />
             </div>
 
@@ -51,6 +73,7 @@ export default function AddTask() {
                 name="priority"
                 id="priority"
                 required
+                onChange={handleTask}
               >
                 <option value="">Select Priority</option>
                 <option value="low">Low</option>
@@ -62,8 +85,7 @@ export default function AddTask() {
         </div>
 
         <div className="mt-16 flex justify-center lg:mt-20">
-          <button
-            type="submit"
+          <button onClick={()=>saveTask(newTask)}
             className="rounded bg-blue-600 px-4 py-2 text-white transition-all hover:opacity-80"
           >
             Create new Task
