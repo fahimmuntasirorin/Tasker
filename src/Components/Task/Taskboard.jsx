@@ -18,9 +18,14 @@ export default function Taskboard() {
     const [tasks , setTasks] = useState([initialTask]);
     const [show , setShow] = useState(false);
 
-    const handleAdd = ({newTask}) =>{
-        console.log(newTask);
-        
+    const handleAdd = (newTask) =>{
+        setTasks([
+            ...tasks,
+            newTask
+            
+        ]);
+
+        setShow(false)
     }
 
     
