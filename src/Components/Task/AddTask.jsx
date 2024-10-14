@@ -1,26 +1,31 @@
 import { Fragment, useState } from "react";
 
-export default function AddTask({ saveTask ,taskToUpdate }) {
-  console.log(taskToUpdate);
-  
+export default function AddTask({ saveTask, taskToUpdate,handleClose }) {
+   // conditional state for modal
+   const [isAdd, setIsAdd] = useState(Object.is(taskToUpdate , null));
+   console.log(isAdd);
+   console.log(taskToUpdate);
+   
   // state
-  const [newTask, setNewTasks] = useState(taskToUpdate || {
-    id: crypto.randomUUID(),
-    title: "",
-    description: "",
-    tags: [],
-    priority: "",
-  });
-  // conditional state for modal
-  const [isAdd , setIsAdd] = useState(false);
+  const [newTask, setNewTasks] = useState(
+    taskToUpdate || {
+      id: crypto.randomUUID(),
+      title: "",
+      description: "",
+      tags: [],
+      priority: "",
+    }
+  );
+ 
+  
+
   const handleTask = (e) => {
     const name = e.target.name;
     let value = e.target.value;
-    if(name==='tags'){
-        value = value.split(",");
+    if (name === "tags") {
+      value = value.split(",");
     }
     setNewTasks({
-
       ...newTask,
       [name]: value,
     });
@@ -30,9 +35,7 @@ export default function AddTask({ saveTask ,taskToUpdate }) {
       <div className="bg-black bg-opacity-75 w-full h-full z-10 absolute top-0 left-0"></div>
       <form className=" top-1/4 left-1/3 absolute z-10 mx-auto my-10 w-full max-w-[740px] rounded-xl border border-[#FEFBFB]/[36%] bg-[#191D26] p-9 max-md:px-4 lg:my-20 lg:p-11">
         <h2 className="mb-9 text-center text-2xl font-bold text-white lg:mb-11 lg:text-[28px]">
-          {
-            isAdd ? 'Add New Task' :'Edit Task'
-          }
+          {isAdd ? "Add New Task" : "Edit Task"}
         </h2>
 
         <div className="space-y-9 text-white lg:space-y-10">
@@ -45,6 +48,7 @@ export default function AddTask({ saveTask ,taskToUpdate }) {
               id="title"
               required
               onChange={handleTask}
+              value={newTask.title}
             />
           </div>
 
@@ -57,6 +61,7 @@ export default function AddTask({ saveTask ,taskToUpdate }) {
               id="description"
               required
               onChange={handleTask}
+              value={newTask.description}
             ></textarea>
           </div>
 
@@ -70,6 +75,7 @@ export default function AddTask({ saveTask ,taskToUpdate }) {
                 id="tags"
                 required
                 onChange={handleTask}
+                value={newTask.tags}
               />
             </div>
 
@@ -81,6 +87,7 @@ export default function AddTask({ saveTask ,taskToUpdate }) {
                 id="priority"
                 required
                 onChange={handleTask}
+                value={newTask.priority}
               >
                 <option value="">Select Priority</option>
                 <option value="low">Low</option>
@@ -91,15 +98,16 @@ export default function AddTask({ saveTask ,taskToUpdate }) {
           </div>
         </div>
 
-        <div className="mt-16 flex justify-center lg:mt-20">
+        <div className="mt-16 flex lg:mt-20 justify-between">
+          <button onClick={handleClose} className="rounded bg-red-600 px-4 py-2 text-white transition-all hover:opacity-80">Close</button>
           <button
             onClick={(e) => {
               e.preventDefault();
-              saveTask(newTask);
+              saveTask(newTask, isAdd);
             }}
             className="rounded bg-blue-600 px-4 py-2 text-white transition-all hover:opacity-80"
           >
-            Create new Task
+            {isAdd ? "Create new Task" : "Edit"}
           </button>
         </div>
       </form>
