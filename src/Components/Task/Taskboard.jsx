@@ -18,6 +18,10 @@ export default function Taskboard() {
     const [tasks , setTasks] = useState([initialTask]);
     const [show , setShow] = useState(false);
 
+    // edited data state container
+    const [taskToUpdate , setTasksToUpdate] = useState(false);
+
+
     const handleAdd = (newTask) =>{
         setTasks([
             ...tasks,
@@ -26,13 +30,21 @@ export default function Taskboard() {
         ]);
 
         setShow(false)
+    };
+
+    // handle edit data
+    const handleEdit = (task) =>{
+        setTasksToUpdate(task);
+        setShow(true);
+        
     }
 
+    
     
     return(
         <section className="mb-20" id="tasks">
             {
-                show && <AddTask saveTask={handleAdd}/>
+                show && <AddTask taskToUpdate={taskToUpdate} saveTask={handleAdd}/>
             }
 		
 		<div className="container">
@@ -43,7 +55,7 @@ export default function Taskboard() {
                 {/* task action */}
 				<TaskAction onAdd={()=>setShow(true)}/>
                 {/* task list */}
-				<TaskList tasks={tasks}/>
+				<TaskList handleEdit={handleEdit} tasks={tasks}/>
 			</div>
 		</div>
 	</section>

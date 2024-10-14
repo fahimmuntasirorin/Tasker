@@ -1,14 +1,18 @@
 import { Fragment, useState } from "react";
 
-export default function AddTask({ saveTask }) {
+export default function AddTask({ saveTask ,taskToUpdate }) {
+  console.log(taskToUpdate);
+  
   // state
-  const [newTask, setNewTasks] = useState({
+  const [newTask, setNewTasks] = useState(taskToUpdate || {
     id: crypto.randomUUID(),
     title: "",
     description: "",
     tags: [],
     priority: "",
   });
+  // conditional state for modal
+  const [isAdd , setIsAdd] = useState(false);
   const handleTask = (e) => {
     const name = e.target.name;
     let value = e.target.value;
@@ -26,7 +30,9 @@ export default function AddTask({ saveTask }) {
       <div className="bg-black bg-opacity-75 w-full h-full z-10 absolute top-0 left-0"></div>
       <form className=" top-1/4 left-1/3 absolute z-10 mx-auto my-10 w-full max-w-[740px] rounded-xl border border-[#FEFBFB]/[36%] bg-[#191D26] p-9 max-md:px-4 lg:my-20 lg:p-11">
         <h2 className="mb-9 text-center text-2xl font-bold text-white lg:mb-11 lg:text-[28px]">
-          Add New Task
+          {
+            isAdd ? 'Add New Task' :'Edit Task'
+          }
         </h2>
 
         <div className="space-y-9 text-white lg:space-y-10">
