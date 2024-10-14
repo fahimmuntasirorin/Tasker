@@ -17,7 +17,6 @@ export default function Taskboard() {
 
   const [tasks, setTasks] = useState([initialTask]);
   const [show, setShow] = useState(false);
-  console.log(show);
 
   // edited data state container
   const [taskToUpdate, setTasksToUpdate] = useState(null);
@@ -59,6 +58,28 @@ export default function Taskboard() {
 const handleDeleteAll = () =>{
     tasks.length = 0;
     setTasks([...tasks])
+};
+
+const handlePriority = (task) =>{
+    const taskIndex = tasks.findIndex((i)=>i.id===task.id);
+    
+   const newTask = [...tasks];
+   newTask[taskIndex].isFavourite = !newTask[taskIndex].isFavourite;
+
+   setTasks(newTask)
+   
+};
+
+// handle search
+
+const handleSearchText = (searchText) =>{
+   
+    const searchResult = tasks.filter(task=>task.title.toLocaleLowerCase().includes(searchText));
+    console.log([...searchResult])
+    setTasks(
+        [...searchResult]
+    )
+    
 }
 
   return (
@@ -73,7 +94,7 @@ const handleDeleteAll = () =>{
 
       <div className="container">
         {/* search box */}
-        <SearchBox />
+        <SearchBox handleSearchText={handleSearchText} />
         <div className="rounded-xl border border-[rgba(206,206,206,0.12)] bg-[#1D212B] px-6 py-8 md:px-9 md:py-16">
           {/* task action */}
           <TaskAction deleteAll={handleDeleteAll} onAdd={() => setShow(true)} />
@@ -82,6 +103,7 @@ const handleDeleteAll = () =>{
             handleDeleteTask={handleDeleteTask}
             handleEdit={handleEdit}
             tasks={tasks}
+            handlePriority={handlePriority}
           />
         </div>
       </div>
